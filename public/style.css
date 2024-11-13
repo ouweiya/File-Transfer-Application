@@ -246,3 +246,27 @@ input[type='checkbox'] {
 textarea:focus {
     outline: 1px solid #1890ff;
 }
+
+/* add */
+.action-cell {
+    text-align: right;
+    padding-right: 20px !important;
+}
+
+.btn-download {
+    padding: 6px 16px;
+    font-size: 13px;
+    background: #1890ff;
+}
+
+/* 响应式布局调整 */
+@media screen and (max-width: 768px) {
+    .action-cell {
+        padding-right: 10px !important;
+    }
+
+    .btn-download {
+        padding: 3px 8px;
+        font-size: 12px;
+    }
+}

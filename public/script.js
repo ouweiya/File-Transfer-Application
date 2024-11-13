@@ -184,7 +184,7 @@ async function loadFileList() {
 }
 
 // 渲染文件列表
-function renderFileList(files) {
+/* function renderFileList(files) {
     fileList.innerHTML = '';
 
     files.forEach(file => {
@@ -207,7 +207,63 @@ function renderFileList(files) {
 
         fileList.appendChild(tr);
     });
+} */
+
+// 修改 renderFileList 函数中的相关部分
+function renderFileList(files) {
+    fileList.innerHTML = '';
+
+    files.forEach(file => {
+        const tr = document.createElement('tr');
+        const isSelected = selectedFiles.has(file.path);
+
+        tr.innerHTML = `
+            <td>
+                <input type="checkbox" data-file="${file.path}" ${isSelected ? 'checked' : ''}>
+            </td>
+            <td>
+                <a href="/uploads/${file.path}" class="file-link" target="_blank">${file.name}</a>
+            </td>
+            <td>${formatFileSize(file.size)}</td>
+            <td>${formatDate(file.uploadTime)}</td>
+            <td class="action-cell">
+                <button class="btn btn-download" onclick="downloadSingleFile('${file.path}', '${file.name}')">
+                    下载
+                </button>
+            </td>
+        `;
+
+        const checkbox = tr.querySelector('input[type="checkbox"]');
+        checkbox.onchange = () => updateFileSelection(checkbox);
+
+        fileList.appendChild(tr);
+    });
 }
+// 添加单文件下载函数
+function downloadSingleFile(filePath, originalName) {
+    const link = document.createElement('a');
+    link.href = `/uploads/${filePath}`;
+    link.download = originalName;
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// 修改单文件下载函数
+// function downloadSingleFile(filePath, originalName) {
+//     const link = document.createElement('a');
+//     link.href = `/uploads/${filePath}`;
+//     // 从文件路径中提取原始文件名（去除时间戳前缀）
+//     const originalFileName = filePath.includes('-') ?
+//         filePath.substring(filePath.indexOf('-') + 1) :
+//         filePath;
+//     link.download = originalFileName;
+//     console.log('originalFileName', originalFileName);
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link);
+// }
 
 // 更新文件选择状态
 function updateFileSelection(checkbox) {
@@ -231,14 +287,29 @@ function updateButtonStates() {
 }
 
 // 下载选中文件
+// function downloadSelectedFiles() {
+//     selectedFiles.forEach(filePath => {
+//         const link = document.createElement('a');
+//         link.href = `/uploads/${filePath}`;
+//         // 从路径中提取原始文件名
+//         const originalName = filePath.includes('-') ? filePath.substring(filePath.indexOf('-') + 1) : filePath;
+//         link.download = originalName;
+//         link.target = '_blank'; // 在新标签页打开
+//         document.body.appendChild(link);
+//         link.click();
+//         document.body.removeChild(link);
+//     });
+// }
+
+// 修改批量下载函数
 function downloadSelectedFiles() {
     selectedFiles.forEach(filePath => {
         const link = document.createElement('a');
         link.href = `/uploads/${filePath}`;
-        // 从路径中提取原始文件名
-        const originalName = filePath.includes('-') ? filePath.substring(filePath.indexOf('-') + 1) : filePath;
-        link.download = originalName;
-        link.target = '_blank'; // 在新标签页打开
+        // 从文件路径中提取原始文件名
+        const originalFileName = filePath.includes('-') ? filePath.substring(filePath.indexOf('-') + 1) : filePath;
+        link.download = originalFileName;
+        link.target = '_blank';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
