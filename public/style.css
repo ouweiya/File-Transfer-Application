@@ -1,0 +1,248 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #f5f5f5;
+    padding: 20px;
+    font-size: 14px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+/* 上传区域样式 */
+.upload-section {
+    border: 2px dashed #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: all 0.3s;
+    background: #fafafa;
+    position: relative;
+}
+
+.upload-section:hover {
+    border-color: #1890ff;
+    background: #f0f8ff;
+}
+
+.upload-section p {
+    color: #666;
+    margin: 5px 0;
+}
+
+/* 进度条样式 */
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #f0f0f0;
+    border-radius: 2px;
+    margin-top: 10px;
+    overflow: hidden;
+    display: none;
+}
+
+.progress-bar .progress {
+    height: 100%;
+    background: #1890ff;
+    width: 0;
+    transition: width 0.3s ease;
+}
+
+/* 文本输入区域 */
+.text-input {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    resize: vertical;
+}
+
+/* 文件列表区域 */
+.file-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #fafafa;
+    border-radius: 4px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.header-title {
+    font-weight: bold;
+    color: #333;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* 文件列表表格样式 */
+.file-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.file-table th,
+.file-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.file-table th {
+    background: #fafafa;
+    font-weight: 500;
+    color: #666;
+}
+
+.file-table tr:hover {
+    background: #fafafa;
+}
+
+/* 按钮样式 */
+.btn {
+    padding: 6px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    background: #1890ff;
+    color: white;
+    white-space: nowrap;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.btn-delete {
+    background: #ff4d4f;
+}
+
+.btn-text {
+    background: #52c41a;
+}
+
+/* 链接样式 */
+.file-link {
+    color: #1890ff;
+    text-decoration: none;
+}
+
+.file-link:hover {
+    text-decoration: underline;
+}
+
+/* 复选框样式 */
+.checkbox-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.checkbox-wrapper input[type='checkbox'] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* 自动刷新开关 */
+.auto-refresh {
+    color: #666;
+    font-size: 14px;
+}
+
+/* 响应式布局 */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .file-table th:nth-child(3),
+    .file-table td:nth-child(3) {
+        display: none; /* 隐藏大小列 */
+    }
+
+    .file-table th,
+    .file-table td {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .btn {
+        padding: 4px 12px;
+        font-size: 13px;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .file-table th:nth-child(4),
+    .file-table td:nth-child(4) {
+        display: none; /* 隐藏时间列 */
+    }
+
+    .header-actions {
+        gap: 5px;
+    }
+
+    .btn {
+        padding: 4px 8px;
+    }
+}
+
+input[type='checkbox'] {
+    cursor: pointer;
+}
+
+textarea:focus {
+    outline: 1px solid #1890ff;
+}
