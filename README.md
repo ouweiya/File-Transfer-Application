@@ -1,6 +1,6 @@
 ### Local network file transfer - clean, simple, with no privacy risks.
 
-**Requires Node.js.**
+**Requires Node.js**
 
 #### Install Dependencies
 
