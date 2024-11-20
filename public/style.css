@@ -179,7 +179,7 @@ h1 {
     gap: 8px;
     white-space: nowrap;
     cursor: pointer;
-    padding: 2px 8px;
+    padding: 2px;
 }
 
 .checkbox-wrapper input[type='checkbox'] {
@@ -197,11 +197,15 @@ h1 {
 /* 响应式布局 */
 @media screen and (max-width: 768px) {
     body {
-        padding: 10px;
+        padding: 0px;
+        border: none;
+        background: #fff;
     }
 
     .container {
-        padding: 15px;
+        padding: 12px;
+        box-shadow: none;
+
     }
 
     h1 {
@@ -237,11 +241,11 @@ h1 {
     }
 
     .header-actions {
-        gap: 5px;
+        gap: 4px;
     }
 
     .btn {
-        padding: 4px 8px;
+        padding: 4px 6px;
     }
 }
 
