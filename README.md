@@ -16,4 +16,4 @@ npm run start
 
 #### Appearance
 
-![Appearance](image.png)
+![Appearance](appearance.png)
