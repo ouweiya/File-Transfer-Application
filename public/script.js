@@ -52,7 +52,7 @@ function initDragAndDrop() {
 }
 
 // 初始化事件监听
-function initEventListeners() {
+/* function initEventListeners() {
     // 全选/取消全选
     selectAll.onchange = () => {
         const checkboxes = fileList.querySelectorAll('input[type="checkbox"]');
@@ -71,6 +71,58 @@ function initEventListeners() {
         }
     };
 }
+ */
+// 在 initEventListeners 函数中添加剪贴板事件监听
+function initEventListeners() {
+    // 保留原有的事件监听代码
+    selectAll.onchange = () => {
+        const checkboxes = fileList.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+            cb.checked = selectAll.checked;
+            updateFileSelection(cb);
+        });
+    };
+
+    autoRefresh.onchange = () => {
+        if (autoRefresh.checked) {
+            autoRefreshInterval = setInterval(loadFileList, 5000);
+        } else {
+            clearInterval(autoRefreshInterval);
+        }
+    };
+
+    // 添加剪贴板事件监听
+    document.addEventListener('paste', handlePaste);
+}
+
+// 处理剪贴板粘贴事件
+async function handlePaste(e) {
+    e.preventDefault();
+
+    const items = e.clipboardData.items;
+    const files = [];
+
+    for (let item of items) {
+        // 检查是否为文件类型
+        if (item.kind === 'file') {
+            const file = item.getAsFile();
+            if (file) {
+                files.push(file);
+            }
+        }
+    }
+
+    if (files.length > 0) {
+        // 使用现有的上传函数上传文件
+        uploadFiles(files);
+    } else {
+        // 如果没有文件，检查是否有文本内容
+        const text = e.clipboardData.getData('text');
+        if (text) {
+            textInput.value = text;
+        }
+    }
+}
 
 // 显示进度条
 function showProgress(percent) {
@@ -87,20 +139,85 @@ function hideProgress() {
 }
 
 // 上传文件
+// async function uploadFiles(files) {
+//     const formData = new FormData();
+//     for (let file of files) {
+//         formData.append('files', file);
+//     }
+
+//     try {
+//         // 显示进度条
+//         showProgress(0);
+
+//         const xhr = new XMLHttpRequest();
+//         xhr.open('POST', '/upload', true);
+
+//         // 监听上传进度
+//         xhr.upload.onprogress = e => {
+//             if (e.lengthComputable) {
+//                 const percent = (e.loaded / e.total) * 100;
+//                 showProgress(percent);
+//             }
+//         };
+
+//         // 处理上传完成
+//         xhr.onload = () => {
+//             hideProgress();
+//             if (xhr.status === 200) {
+//                 const result = JSON.parse(xhr.responseText);
+//                 if (result.success) {
+//                     loadFileList();
+//                 } else {
+//                     alert('上传失败：' + result.error);
+//                 }
+//             } else {
+//                 alert('上传失败：服务器错误');
+//             }
+//         };
+
+//         // 处理上传错误
+//         xhr.onerror = () => {
+//             hideProgress();
+//             alert('上传出错：网络错误');
+//         };
+
+//         xhr.send(formData);
+//     } catch (error) {
+//         hideProgress();
+//         alert('上传出错：' + error.message);
+//     }
+
+//     fileInput.value = '';
+// }
+
+// 修改uploadFiles函数，添加额外的文件类型检查和错误处理
 async function uploadFiles(files) {
+    // 添加文件类型检查和大小限制的提示
+    const maxSize = 5 * 1024 * 1024 * 1024; // 5GB
+    const invalidFiles = [];
+
+    for (let file of files) {
+        if (file.size > maxSize) {
+            invalidFiles.push(`${file.name} (超过5GB大小限制)`);
+        }
+    }
+
+    if (invalidFiles.length > 0) {
+        alert('以下文件无法上传：\n' + invalidFiles.join('\n'));
+        return;
+    }
+
     const formData = new FormData();
     for (let file of files) {
         formData.append('files', file);
     }
 
     try {
-        // 显示进度条
         showProgress(0);
 
         const xhr = new XMLHttpRequest();
         xhr.open('POST', '/upload', true);
 
-        // 监听上传进度
         xhr.upload.onprogress = e => {
             if (e.lengthComputable) {
                 const percent = (e.loaded / e.total) * 100;
@@ -108,12 +225,15 @@ async function uploadFiles(files) {
             }
         };
 
-        // 处理上传完成
         xhr.onload = () => {
             hideProgress();
             if (xhr.status === 200) {
                 const result = JSON.parse(xhr.responseText);
                 if (result.success) {
+                    // 添加上传成功的提示
+                    const fileCount = files.length;
+                    const message = `成功上传 ${fileCount} 个文件`;
+                    showNotification(message);
                     loadFileList();
                 } else {
                     alert('上传失败：' + result.error);
@@ -123,7 +243,6 @@ async function uploadFiles(files) {
             }
         };
 
-        // 处理上传错误
         xhr.onerror = () => {
             hideProgress();
             alert('上传出错：网络错误');
@@ -135,7 +254,27 @@ async function uploadFiles(files) {
         alert('上传出错：' + error.message);
     }
 
-    fileInput.value = '';
+    if (fileInput) {
+        fileInput.value = '';
+    }
+}
+
+
+// 添加通知提示函数
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'upload-notification';
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    // 2秒后自动移除通知
+    setTimeout(() => {
+        notification.classList.add('fade-out');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 2000);
 }
 
 // 保存文本
