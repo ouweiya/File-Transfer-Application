@@ -20,3 +20,12 @@ npm run s
 #### Appearance
 
 ![Appearance](appearance.png)
+
+
+#### 创建快捷方式
+
+目标命令(右键快捷方式->属性->目标)
+
+```console
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "D:\路径\start-app.ps1"
+```
