@@ -332,34 +332,6 @@ input[type='checkbox']::after {
     }
 }
 
-/* 添加全局粘贴提示
-body::after {
-    content: '可以直接粘贴文件或文本 (Ctrl+V)';
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 13px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-body:empty::after {
-    opacity: 1;
-}
-
-@media screen and (max-width: 768px) {
-    body::after {
-        font-size: 12px;
-        padding: 6px 12px;
-    }
-} */
-
 .checkbox-label {
     padding: 8px;
     cursor: pointer;
