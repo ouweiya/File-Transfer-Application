@@ -22,9 +22,9 @@ npm run s
 ![Appearance](appearance.png)
 
 
-#### 创建快捷方式
+#### Create Shortcut
 
-目标命令(右键快捷方式->属性->目标)
+Target Command (Right-click Shortcut -> Properties -> Target)
 
 ```console
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "D:\路径\start-app.ps1"
