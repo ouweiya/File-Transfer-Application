@@ -12,6 +12,9 @@ npm install
 
 ```console
 npm run start
+
+or
+npm run s
 ```
 
 #### Appearance
