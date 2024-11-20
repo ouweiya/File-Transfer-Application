@@ -14,11 +14,23 @@ const deleteBtn = document.getElementById('deleteBtn');
 const progressBar = document.getElementById('progressBar');
 const progress = document.getElementById('progress');
 
+// // 初始化
+// document.addEventListener('DOMContentLoaded', () => {
+//     initDragAndDrop();
+//     initEventListeners();
+//     loadFileList();
+// });
+
 // 初始化
 document.addEventListener('DOMContentLoaded', () => {
     initDragAndDrop();
     initEventListeners();
     loadFileList();
+
+    // 初始化时启动自动刷新
+    if (autoRefresh.checked) {
+        autoRefreshInterval = setInterval(loadFileList, 2000);
+    }
 });
 
 // 初始化拖放上传
@@ -73,8 +85,32 @@ function initDragAndDrop() {
 }
  */
 // 在 initEventListeners 函数中添加剪贴板事件监听
+// function initEventListeners() {
+//     // 保留原有的事件监听代码
+//     selectAll.onchange = () => {
+//         const checkboxes = fileList.querySelectorAll('input[type="checkbox"]');
+//         checkboxes.forEach(cb => {
+//             cb.checked = selectAll.checked;
+//             updateFileSelection(cb);
+//         });
+//     };
+
+//     // 自动刷新 - 将时间从5000ms改为2000ms
+//     autoRefresh.onchange = () => {
+//         if (autoRefresh.checked) {
+//             autoRefreshInterval = setInterval(loadFileList, 2000);
+//         } else {
+//             clearInterval(autoRefreshInterval);
+//         }
+//     };
+
+//     // 添加剪贴板事件监听
+//     document.addEventListener('paste', handlePaste);
+// }
+
+// 保持原有的事件监听函数
 function initEventListeners() {
-    // 保留原有的事件监听代码
+    // 全选/取消全选
     selectAll.onchange = () => {
         const checkboxes = fileList.querySelectorAll('input[type="checkbox"]');
         checkboxes.forEach(cb => {
@@ -83,15 +119,16 @@ function initEventListeners() {
         });
     };
 
+    // 自动刷新
     autoRefresh.onchange = () => {
         if (autoRefresh.checked) {
-            autoRefreshInterval = setInterval(loadFileList, 5000);
+            autoRefreshInterval = setInterval(loadFileList, 2000);
         } else {
             clearInterval(autoRefreshInterval);
         }
     };
 
-    // 添加剪贴板事件监听
+    // 剪贴板事件监听
     document.addEventListener('paste', handlePaste);
 }
 
@@ -259,7 +296,6 @@ async function uploadFiles(files) {
     }
 }
 
-
 // 添加通知提示函数
 function showNotification(message) {
     const notification = document.createElement('div');
@@ -358,7 +394,9 @@ function renderFileList(files) {
 
         tr.innerHTML = `
             <td>
+            <label class="checkbox-label">
                 <input type="checkbox" data-file="${file.path}" ${isSelected ? 'checked' : ''}>
+            </label>
             </td>
             <td>
                 <a href="/uploads/${file.path}" class="file-link" target="_blank">${file.name}</a>

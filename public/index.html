@@ -1,61 +1,64 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文件传输</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>文件传输</h1>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>文件传输</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="icon" type="image/png" href="favicon.png" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>文件传输</h1>
 
-        <!-- 上传区域 -->
-        <div class="upload-section" id="dropZone">
-            <input type="file" id="fileInput" multiple style="display: none;">
-            <p>点击，拖拽，粘贴文件到此处上传</p>
-            <p style="font-size: 12px;">支持多文件上传，单个文件最大5GB</p>
-            <div class="progress-bar" id="progressBar">
-                <div class="progress" id="progress"></div>
+            <!-- 上传区域 -->
+            <div class="upload-section" id="dropZone">
+                <input type="file" id="fileInput" multiple style="display: none" />
+                <p>点击，拖拽，粘贴文件到此处上传</p>
+                <p style="font-size: 12px">支持多文件上传，单个文件最大5GB</p>
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress" id="progress"></div>
+                </div>
             </div>
-        </div>
 
-        <!-- 文本输入框 -->
-        <textarea class="text-input" id="textInput" placeholder="在此输入要传输的文本"></textarea>
-        <div style="text-align: right; margin-bottom: 20px;">
-            <button class="btn btn-text" onclick="saveText()">保存文本</button>
-        </div>
-
-        <!-- 文件列表 -->
-        <div class="file-list-header">
-            <div class="header-title">文件列表</div>
-            <div class="header-actions">
-                <label class="checkbox-wrapper auto-refresh">
-                    <input type="checkbox" id="autoRefresh">
-                    <span>自动刷新</span>
-                </label>
-                <button class="btn" onclick="loadFileList()">刷新列表</button>
-                <button class="btn" id="downloadBtn" onclick="downloadSelectedFiles()" disabled>下载选中</button>
-                <button class="btn btn-delete" id="deleteBtn" onclick="deleteSelectedFiles()" disabled>删除选中</button>
+            <!-- 文本输入框 -->
+            <textarea class="text-input" id="textInput" placeholder="在此输入要传输的文本"></textarea>
+            <div style="text-align: right; margin-bottom: 20px">
+                <button class="btn btn-text" onclick="saveText()">保存文本</button>
             </div>
+
+            <!-- 文件列表 -->
+            <div class="file-list-header">
+                <div class="header-title">文件列表</div>
+                <div class="header-actions">
+                    <label class="checkbox-wrapper auto-refresh">
+                        <input type="checkbox" id="autoRefresh" checked />
+                        <span>自动刷新</span>
+                    </label>
+                    <button class="btn" onclick="loadFileList()">刷新列表</button>
+                    <button class="btn" id="downloadBtn" onclick="downloadSelectedFiles()" disabled>下载选中</button>
+                    <button class="btn btn-delete" id="deleteBtn" onclick="deleteSelectedFiles()" disabled>删除选中</button>
+                </div>
+            </div>
+
+            <table class="file-table">
+                <thead>
+                    <tr>
+                        <th width="40">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="selectAll" />
+                            </label>
+                        </th>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>上传时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="fileList"></tbody>
+            </table>
         </div>
 
-        <table class="file-table">
-            <thead>
-                <tr>
-                    <th width="40">
-                        <input type="checkbox" id="selectAll">
-                    </th>
-                    <th>文件名</th>
-                    <th>大小</th>
-                    <th>上传时间</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody id="fileList"></tbody>
-        </table>
-    </div>
-
-    <script src="script.js"></script>
-</body>
+        <script src="script.js"></script>
+    </body>
 </html>
