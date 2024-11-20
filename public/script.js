@@ -133,6 +133,7 @@ function initEventListeners() {
 }
 
 // 处理剪贴板粘贴事件
+// 修改 handlePaste 函数以更好地处理各种文件类型
 async function handlePaste(e) {
     e.preventDefault();
 
@@ -144,7 +145,10 @@ async function handlePaste(e) {
         if (item.kind === 'file') {
             const file = item.getAsFile();
             if (file) {
-                files.push(file);
+                // 确保文件有名称和大小
+                if (file.name && file.size > 0) {
+                    files.push(file);
+                }
             }
         }
     }
@@ -232,10 +236,14 @@ async function uploadFiles(files) {
     // 添加文件类型检查和大小限制的提示
     const maxSize = 5 * 1024 * 1024 * 1024; // 5GB
     const invalidFiles = [];
+    const validFiles = [];  // 添加一个数组来跟踪有效文件
 
+    // 检查每个文件
     for (let file of files) {
         if (file.size > maxSize) {
             invalidFiles.push(`${file.name} (超过5GB大小限制)`);
+        } else {
+            validFiles.push(file);  // 将有效文件添加到数组
         }
     }
 
@@ -244,8 +252,12 @@ async function uploadFiles(files) {
         return;
     }
 
+    if (validFiles.length === 0) {
+        return; // 如果没有有效文件，直接返回
+    }
+
     const formData = new FormData();
-    for (let file of files) {
+    for (let file of validFiles) {
         formData.append('files', file);
     }
 
@@ -267,8 +279,8 @@ async function uploadFiles(files) {
             if (xhr.status === 200) {
                 const result = JSON.parse(xhr.responseText);
                 if (result.success) {
-                    // 添加上传成功的提示
-                    const fileCount = files.length;
+                    // 使用服务器返回的文件数量或有效文件数组的长度
+                    const fileCount = result.files ? result.files.length : validFiles.length;
                     const message = `成功上传 ${fileCount} 个文件`;
                     showNotification(message);
                     loadFileList();
@@ -296,11 +308,16 @@ async function uploadFiles(files) {
     }
 }
 
-// 添加通知提示函数
+// 更新通知显示函数，添加图标支持
 function showNotification(message) {
     const notification = document.createElement('div');
     notification.className = 'upload-notification';
-    notification.textContent = message;
+
+    // 添加成功图标
+    notification.innerHTML = `
+        <span class="notification-icon">✓</span>
+        <span class="notification-message">${message}</span>
+    `;
 
     document.body.appendChild(notification);
 
@@ -308,7 +325,9 @@ function showNotification(message) {
     setTimeout(() => {
         notification.classList.add('fade-out');
         setTimeout(() => {
-            document.body.removeChild(notification);
+            if (notification.parentNode) {
+                document.body.removeChild(notification);
+            }
         }, 300);
     }, 2000);
 }
