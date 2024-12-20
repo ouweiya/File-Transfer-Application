@@ -1,5 +1,5 @@
 # 设置工作目录
-Set-Location -Path "D:\DOC\File Transfer Application"
+Set-Location -Path "D:\project\File Transfer Application"
 
 # 运行npm命令
 npm run s

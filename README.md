@@ -27,5 +27,5 @@ npm run s
 Target Command (Right-click Shortcut -> Properties -> Target)
 
 ```console
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "D:\路径\start-app.ps1"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "D:\[path]\start-app.ps1"
 ```
